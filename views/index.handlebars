@@ -1,0 +1,37 @@
+<h1>Song App</h1>
+
+<h2>Topics for Watson</h2>
+<ul>
+  {{#each songs}}
+    {{#unless listened}}
+      {{> songs/song-block listened=true}}
+    {{/unless}}
+  {{/each}}
+</ul>
+
+<h2>Songs I have listened to</h2>
+
+<ul>
+  {{#each songs}}
+    {{#if listened}}
+      {{> songs/song-block listened=false}}
+    {{/if}}
+  {{/each}}
+</ul>
+
+<h2>Add a Song</h2>
+<form class="create-form" method="post" action="/api/songs">
+
+  <div class="form-group">
+    <label for="ca">Song Name:</label>
+    <input type="text" id="ca" name="name">
+  </div>
+
+  <div class="form-group">
+    <label for="slee">Listened to?</label><br>
+    <input type="radio" name="listened" value="1" checked> Yes<br>
+    <input type="radio" name="listened" value="0"> No
+  </div>
+
+  <button type="submit">Add Song</button>
+</form>
