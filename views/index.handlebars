@@ -1,37 +1,159 @@
-<h1>Song App</h1>
+<div class="wrapper">
 
-<h2>Topics for Watson</h2>
-<ul>
-  {{#each songs}}
-    {{#unless listened}}
-      {{> songs/song-block listened=true}}
-    {{/unless}}
-  {{/each}}
-</ul>
+    <!-- N A V B A R -->
+    <div class="sticky-top">
 
-<h2>Songs I have listened to</h2>
+        <nav class="navbar navbar-dark bg-dark">
+            <div class="nav-content">
+                <a class="navbar-brand" href="https://ankitashah212.github.io/School_guide/">
+                    <img src="assets/images/white-icon-sized.png" alt="Brand Icon">
+                    University Search
+                </a>
+                <div class="search-box">
+                    <input id="search-input" class="form-control mr-sm-2" type="text" placeholder="Search">
+                    <button type="submit" id="search-button" class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Enter</button>
+                </div>
+                <span class="navbar-text">
+                    Get that education!
+                </span>
+            </div>
+        </nav>
 
-<ul>
-  {{#each songs}}
-    {{#if listened}}
-      {{> songs/song-block listened=false}}
-    {{/if}}
-  {{/each}}
-</ul>
+        <!-- F L O A T I N G   S E A R C H   B O X -->
+        <div class="container rec-container">
 
-<h2>Add a Song</h2>
-<form class="create-form" method="post" action="/api/songs">
+            <div class="card bg-light mb-3">
+                <h3 class="card-header">Search Filters</h3>
+                <div class="card-body">
+                    <div class="form_contact" method="post">
+                        <form action="/action_page.php">
+                            <!-- T U I T I O N  -->
+                            <input id="tuition" class="form-control mr-sm-2" type="number" placeholder="Maximum Tuition">
 
-  <div class="form-group">
-    <label for="ca">Song Name:</label>
-    <input type="text" id="ca" name="name">
-  </div>
+                            <!-- S A T   S C O R E S  -->
+                            <input id="sat" class="form-control mr-sm-2" type="number" placeholder="Maximum SAT">
 
-  <div class="form-group">
-    <label for="slee">Listened to?</label><br>
-    <input type="radio" name="listened" value="1" checked> Yes<br>
-    <input type="radio" name="listened" value="0"> No
-  </div>
+                            <!-- S T A T E -->
+                            <div class="form-group">
+                                <label class="form-label" for="state">Select State</label>
+                                <select class="form-control" id="state">    
+                                </select>
+                            </div>
 
-  <button type="submit">Add Song</button>
-</form>
+                            <!-- D E G R E E   B.A -->
+                            <div class="form-group">
+                                <label class="form-label" for="degree">Select Degree</label>
+                                <select class="form-control" id="degree">
+                                </select>
+                            </div>
+
+                            <button type="submit" id="form-button" class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- C O N T E N T  B O X  -->
+    <!-- Welcome div -->
+    <div class="container page-body welcome">
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-3">Find Schools!</h1>
+                <p class="lead">Use the search bar and filters to quickly narrow down your school search.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Chart div -->
+    <div class="container page-body main">
+        <div class="row">
+            <div class="col content">
+                <div id="dataDiv">
+                    <!-- <table data-toggle="table" class="display table table-bordered" data-url="php/process.php?method=fetchdata"> -->
+                    <table data-toggle="table" class="display table table-bordered" id="clienti">
+                        <thead>
+                            <tr class="school-row">
+                                <th data-field="school.name">School</th>
+                                <th data-field="2014.student.size">Student Size</th>
+                                <th data-field="2014.admissions.sat_scores.average.overall">SAT</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Results div -->
+    <div class="container page-body chart-body">
+        <div id="results-box">
+            <div class="row">
+                <h3 id="school-name">School Name</h3>
+            </div>
+
+            <div class="row results-content">
+                <div class="col content">
+                    <div id="charts">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="bar-tab" data-toggle="tab" href="#bar-graph" role="tab" aria-controls="bar" aria-expanded="true"
+                                    data-ytta-id="-">Admissions</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="demo-tab" data-toggle="tab" href="#demo-graph" role="tab" aria-controls="demo" data-ytta-id="-" aria-expanded="false">Demographics</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="aid-tab" data-toggle="tab" href="#aid-graph" role="tab" aria-controls="aid" data-ytta-id="-" aria-expanded="false">Aid Award Rates</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade active show" id="bar-graph" role="tabpanel" aria-labelledby="bar-tab" aria-expanded="true">
+                            </div>
+                            <div class="tab-pane fade" id="demo-graph" role="tabpanel" aria-labelledby="demo-tab" aria-expanded="false">
+                            </div>
+                            <div class="tab-pane fade" id="aid-graph" role="tabpanel" aria-labelledby="aid-tab" aria-expanded="false">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <button id="go-back-button" class="btn btn-outline-secondary my-2 my-sm-0">Go Back</button>
+            </div>
+
+            <div class="results-loading">
+                <img class="loading-icon" src="assets/images/time-loading.gif" alt="Loading Icon">
+                <h6>Loading . . .</h6>
+            </div>
+        </div>
+    </div>
+
+    <div class="card bg-light mb-3 map-card">
+        <h3 class="card-header">Map It</h3>
+        <div class="card-body">
+            <div id="googleMap" style="width:100%;height:400px;">
+            </div>
+        </div>
+    </div>
+
+    <!-- R E T U R N   T O   T O P  -->
+    <div class="toTop">
+        <a href="#" class="toTop badge badge-info">Return to Top</a>
+    </div>
+    <div class="push"></div>
+
+    <!-- F I X E D   F O O T E R -->
+    <div class="navbar navbar-default fixed-footer">
+        <div class="container center-footer">
+            <p class="navbar-text footer-content">Copyright:
+                <a class="footer-content" href="https://github.com/Ankitashah212" target="_blank">A.S</a>
+                <a class="footer-content" href="https://github.com/lpeteet" target="_blank">L.P</a>
+                <a class="footer-content" href="https://github.com/MaddJhin" target="_blank">F.C</a>
+                <a class="footer-content" href="https://github.com/lcanizzo" target="_blank">L.C</a> &copy; 2017
+            </p>
+        </div>
+    </div>
+</div>
