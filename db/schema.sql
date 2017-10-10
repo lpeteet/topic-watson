@@ -13,10 +13,13 @@ CREATE TABLE users
 
 CREATE TABLE topics
 (
-	id int NOT NULL AUTO_INCREMENT,
+	id int  AUTO_INCREMENT,
 	name varchar(255) NOT NULL,
-	user_id int NOT NULL,
-	FOREIGN KEY (user_id) REFERENCES users(id),
 	PRIMARY KEY (id)
 );
-
+CREATE TABLE test
+(
+	id int  AUTO_INCREMENT,
+	name varchar(255) NOT NULL,
+	PRIMARY KEY (id)
+);
