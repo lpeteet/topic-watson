@@ -36,3 +36,21 @@ function(error, data) {
   console.log(JSON.stringify(data, null, 2));
   }
 );
+
+
+
+$(() => {
+
+    event.preventDefault();
+
+    $('#search-button').on('click', (event) => {
+        console.log('click');
+        var input = {
+
+            name: $('#search-input').val().trim()
+        }
+
+        console.log(input);
+        });
+
+    });
