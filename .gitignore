@@ -62,3 +62,6 @@ unused/
 
 # OS generated files #
 .DS_Store
+\
+# Temporary Debugging File
+queryOut.json

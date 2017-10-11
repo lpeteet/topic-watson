@@ -21,6 +21,9 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.1",
     "express-handlebars": "^3.0.0",
+    "ibm-cloud-env": "0.0.7",
+    "jsonfile": "^4.0.0",
+    "log4js": "^2.3.4",
     "mysql": "^2.15.0",
     "watson-developer-cloud": "^2.41.1"
   }

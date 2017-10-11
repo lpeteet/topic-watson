@@ -5,6 +5,17 @@ var router = express.Router();
 // Import the model (cat.js) to use its database functions.
 var watson = require("../models/watsonModel.js");
 
+// TEST ROUTE FOR WATSON
+router.get("/watsontest", function(req, res) {
+
+  var watsonFuncs = require("../public/assets/js/watson.js");
+  //console.log("router.get(/watsontest, watsonFuncs", watsonFuncs);
+  watsonFuncs.test1();
+  watsonFuncs.test2();
+  
+  res.send("Returning from watsonTest");
+});
+
 // Create all our routes and set up logic within those routes where required.
 router.get("/", function(req, res) {
   watson.all(function(data) {
