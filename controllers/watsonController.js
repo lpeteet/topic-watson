@@ -30,9 +30,9 @@ router.get("/", function(req, res) {
 // TODO make this endpoint work!
 router.post("/api/watson", function(req, res) {
   watson.create([
-    "name", "listened"
+    "name"
   ], [
-    req.body.name, req.body.listened
+     req.body.name
   ], function(result) {
     // Send back the ID of the new quote
     res.redirect("/?id=" + result.insertId );
