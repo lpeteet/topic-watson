@@ -105,7 +105,10 @@ adc9daff-1060-443b-8062-67a173edb367 ENVIRONMENT ID
         return;
  */
         var myQuery = 'IBM WATSON';
-        
+
+        //FROM WEB
+        myQuery = {'query': "Example",'term':"nested(entities).filter(entities.type:Person).term(entities.text)"}
+
         discovery.query({
             // environment_id: 'adc9daff-1060-443b-8062-67a173edb367',
             environment_id: 'system',
