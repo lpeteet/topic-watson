@@ -72,9 +72,44 @@ adc9daff-1060-443b-8062-67a173edb367 ENVIRONMENT ID
 '3612f4ad-2ef0-4aa1-8fa1-1063e6382a88'
 */
   var watsonFunctions = {
-    test1: function() {
+    listEnvironments() {
+        discovery.getEnvironments({}, function(err, data) {
+            if (err) {
+                console.error("discovery.getEnvironments Error: ", err);
+            }  else {
+                console.log("discovery.getEnvironments data: ", JSON.stringify(data, null, 2));
+            }
+        });
+        return;
+    },
+
+    listCollections() {
+        discovery.getCollections('adc9daff-1060-443b-8062-67a173edb367', function(err, data) {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log("getCollections Returned", JSON.stringify(data, null, 2));
+            }
+        });
+    return;
+    },
+
+    writeJSONFIle() {
+        var fs = require("fs");
+        //DELETE EXISTING CONTENTS (TRUNCATE)
+        fs.truncate("outputJSON.json", 0, function() {
+            fs.writeFile("outputJSON.json", JSON.stringify(outputJSON, null, 2), function (err) {
+                if (err) {
+                    console.log("Error Writing to outputJSON.json: ", err);
+                } else {
+                    console.log("Wrote Query to outputJSON.json!");
+                }
+            }); //WriteFile
+        }); //Truncate
+    },
+
+    test1: function(limit, searchString, callback) {
         console.log("Inside watsonFunctions.test1");
-        var fs = require('fs');
         
         var discovery = new DiscoveryV1({
             username: 'd88fd447-4ac9-4a34-8d9e-b5c9d50dd4df',
@@ -82,83 +117,56 @@ adc9daff-1060-443b-8062-67a173edb367 ENVIRONMENT ID
             version_date: '2017-09-01'
         });
         //console.log("discovery", discovery);
-        
-        //List Environments
-/*
-       discovery.getEnvironments({}, function(err, data) {
-            if (err) {
-                console.error("discovery.getEnvironments Error: ", err);
-            }  else {
-                console.log("discovery.getEnvironments data: ", JSON.stringify(data, null, 2));
-        }
-        });
-*/
-        //List Collections
-        // discovery.getCollections(('adc9daff-1060-443b-8062-67a173edb367'), function(err, data) {
-/*         discovery.getCollections('adc9daff-1060-443b-8062-67a173edb367', function(err, data) {
-            if (err) {
-                console.error(err);
-            } else {
-                console.log("getCollections Returned", JSON.stringify(data, null, 2));
-            }
-        });
-        return;
- */
-        var myQuery = 'IBM WATSON';
-
+        var myQuery;
+        // var myQuery = 'IBM WATSON';
+        // myQuery = "query=bees,return=title,url";
+        //myQuery = 'natural_language_query=How do bees fly, count=15';
+        myQuery = 'natural_language_query=' + searchString + ", count=" + limit;
+        //console.log("myQuery", myQuery);
+        // myQuery = {'query': "bees", 'count':10}
+        // myQuery = {'query': "Example",'term':"nested(entities).filter(entities.type:Person).term(entities.text)"}
+        // myQuery = {"keywords":"(text:bees,relevance>0.9)"};
+        // myQuery = {"keywords:(text:IBM Watson)"};
         //FROM WEB
-        myQuery = {'query': "Example",'term':"nested(entities).filter(entities.type:Person).term(entities.text)"}
 
+        var outputJSON = [];
         discovery.query({
             // environment_id: 'adc9daff-1060-443b-8062-67a173edb367',
             environment_id: 'system',
             collection_id: 'news',
             // collection_id: '3612f4ad-2ef0-4aa1-8fa1-1063e6382a88',
-            query: myQuery
+            query: myQuery,
+            aggregations: '[term(enrichedTitle.entities.text,count:20)]'
+            // filter: 'language:(english)'
             },
             function(err, data) {
                 if (err) {
                     console.error("discovery.Query Error: ", err);
                 } else {
-                    //console.log("discovery.Query Response: ", JSON.stringify(data, null, 2));
-                    var fs = require("fs");
-                    
-                    // Write out Query Results for Testing (FOR NOW)
-                    //DELETE EXISTING CONTENTS (TRUNCATE)
-                     fs.truncate("queryOut.json", 0, function() {
-                        fs.writeFile("queryOut.json", JSON.stringify(data, null, 2), function (err) {
-                            if (err) {
-                                console.log("Error Writing to queryOut.json: ", err);
-                            } else {
-                            // Otherwise, it will print: "movies.txt was updated!"
-                            console.log("Wrote Query to queryOut.json!");
-                            }
-                        }); //WriteFile
-                    }); //Truncate
-
                     //Have Data at this point in results
                     console.log("data.matching_results", data.matching_results);
                     console.log("data.results.length", data.results.length);
-                    // var results = jsonData.matching_results.results;
-                    // console.log("results", results);
-
+                    for (var i = 0; ( (i < data.results.length) || (outputJSON.length >= limit)); i++) {
+                        var element = data.results[i];
+                        // console.log("element", element);
+                        if (typeof(element.enriched_title) != "undefined") {
+                            if (typeof(element.enriched_title.concepts) != "undefined") {
+                                //console.log("element.enriched_title.concepts", element.enriched_title.concepts);
+                                var concepts = element.enriched_title.concepts;
+                                outputJSON.push({"concepts": concepts});
+                            }
+                        }
+                    } // For Loop
+                    //console.log("returning outputJSON", outputJSON);
+                    //console.log("res Inside CallBack", res);
+                    //ERROR or: Can't set headers after they are sent.
+                    //res.json(outputJSON);
+                    callback(outputJSON);
+                    // return outputJSON;
                 } //If err
             }
         );
-/*
-        var file = fs.readFileSync('./public/assets/testing/test-doc1.html');
-        //console.log("file", file);
-         discovery.addDocument(('adc9daff-1060-443b-8062-67a173edb367', '3612f4ad-2ef0-4aa1-8fa1-1063e6382a88', file),
-            function(error, data) {
-                if (error) {
-                    console.log("error", error);
-                    return "Error Adding Discovery Document" + error;
-                }
-                console.log("presumably No Error from discovery Add Document, data", data);
-                console.log("JSON.stringify(data): ", JSON.stringify(data, null, 2));
-            }
-        )
-    */            },
+    },    
     test2: function() {
         console.log("Inside watsonFunctions.test2");
     }

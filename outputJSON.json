@@ -1,0 +1,37 @@
+[
+  {
+    "concepts": [
+      {
+        "text": "Honey bee",
+        "relevance": 0.886784,
+        "dbpedia_resource": "http://dbpedia.org/resource/Honey_bee"
+      },
+      {
+        "text": "Bumblebee",
+        "relevance": 0.82944,
+        "dbpedia_resource": "http://dbpedia.org/resource/Bumblebee"
+      },
+      {
+        "text": "Apidae",
+        "relevance": 0.821295,
+        "dbpedia_resource": "http://dbpedia.org/resource/Apidae"
+      }
+    ]
+  },
+  {
+    "categories": [
+      {
+        "score": 0.980065,
+        "label": "/business and industrial/agriculture and forestry/crops and seed"
+      },
+      {
+        "score": 0.132532,
+        "label": "/style and fashion/clothing/pants"
+      },
+      {
+        "score": 0.0176243,
+        "label": "/pets/birds"
+      }
+    ]
+  }
+]

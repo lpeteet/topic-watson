@@ -9,11 +9,16 @@ var watson = require("../models/watsonModel.js");
 router.get("/watsontest", function(req, res) {
 
   var watsonFuncs = require("../public/assets/js/watson.js");
-  //console.log("router.get(/watsontest, watsonFuncs", watsonFuncs);
-  watsonFuncs.test1();
-  watsonFuncs.test2();
+  watsonFuncs.test1(12, 'How do bees fly', function(data) {
+    console.log("Returned data.length", data.length);
+    res.send(data);
+  });  //console.log("router.get(/watsontest, watsonFuncs", watsonFuncs);
+  // var retVal = watsonFuncs.test1(10);
+  // console.log("retVal", retVal);
+  // watsonFuncs.test2();
   
-  res.send("Returning from watsonTest");
+//  res.send("Returning from watsonTest");
+
 });
 
 // Create all our routes and set up logic within those routes where required.
